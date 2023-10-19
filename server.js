@@ -13,6 +13,8 @@ import {
   createCookieSessionStorage,
 } from '@shopify/remix-oxygen';
 
+import {createClient} from '@sanity/client';
+
 /**
  * Export a fetch handler in module format.
  */
@@ -58,13 +60,31 @@ export default {
       });
 
       /**
+       * Create Sanity client.
+       */
+
+      const sanity = createClient({
+        projectId: env.SANITY_PROJECT_ID,
+        dataset: env.SANITY_DATASET,
+        apiVersion: env.SANITY_API_VERSION ?? '2023-03-30',
+        useCdn: process.env.NODE_ENV === 'production',
+      });
+
+      /**
        * Create a Remix request handler and pass
        * Hydrogen's Storefront client to the loader context.
        */
       const handleRequest = createRequestHandler({
         build: remixBuild,
         mode: process.env.NODE_ENV,
-        getLoadContext: () => ({session, storefront, cart, env, waitUntil}),
+        getLoadContext: () => ({
+          session,
+          storefront,
+          cart,
+          env,
+          waitUntil,
+          sanity,
+        }),
       });
 
       const response = await handleRequest(request);

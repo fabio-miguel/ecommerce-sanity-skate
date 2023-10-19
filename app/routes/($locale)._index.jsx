@@ -13,6 +13,10 @@ export async function loader({context}) {
   const featuredCollection = collections.nodes[0];
   const recommendedProducts = storefront.query(RECOMMENDED_PRODUCTS_QUERY);
 
+  const homepageSanity = await context.sanity.fetch(`*[_type == "home"]`); // Sanity data from homepage
+
+  console.log(homepageSanity);
+
   return defer({featuredCollection, recommendedProducts});
 }
 
