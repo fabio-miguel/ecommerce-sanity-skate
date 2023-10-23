@@ -45,10 +45,16 @@ function SanityHero(data) {
   const heroLogoURL = data.hero[0].hero.content[0].image.asset._ref;
 
   return (
-    <section className="hero-section w-full relative overflow-hidden h-screen">
+    <section
+      className="hero-section w-full relative overflow-hidden h-screen"
+      style={{
+        height: 'calc(100vh - var(--header-height))',
+      }}
+    >
       <div className="hero-content flex flex-col w-full h-full absolute top-0 right-0 bottom-0 left-0 ">
-        <div className="hero-video-container h-auto flex-shrink-1 overflow-hidden relative">
+        <div className="hero-video-container h-full flex-shrink-1 overflow-hidden relative border-solid border-black border-2">
           <div className="hero-video-wrapper h-full relative">
+            <div className="absolute top-0 right-0 bottom-0 left-0 h-full w-full pointer-events-none bg-var(--black)"></div>
             <video
               width="100%"
               height="100%"
@@ -56,14 +62,14 @@ function SanityHero(data) {
               autoPlay
               muted
               loop
-              className="w-full h-auto object-cover"
+              className="w-full h-full !important object-cover"
             >
               <source src={heroVideoURL} type="video/mp4" />
             </video>
           </div>
         </div>
-
-        <div className="hero-logo-container  p-5 flex-shrink-0">
+        <div className="relative"></div>
+        <div className="bottom-0 left-0 right-0 hero-logo-container p-5 mt-auto flex-shrink-0">
           <img
             src={urlFor(heroLogoURL).url()}
             alt="Test"
@@ -71,7 +77,6 @@ function SanityHero(data) {
             style={{
               inset: '0px',
               objectFit: 'cover',
-              // position: 'absolute',
             }}
           />
         </div>
