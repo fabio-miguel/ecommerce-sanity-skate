@@ -1,11 +1,23 @@
 import {defer} from '@shopify/remix-oxygen';
 import {Await, useLoaderData, Link} from '@remix-run/react';
 import {Suspense} from 'react';
-import {Image, Money} from '@shopify/hydrogen';
+import {Image, Money, MediaFile} from '@shopify/hydrogen';
+
+import imageUrlBuilder from '@sanity/image-url';
+import {client} from '~/lib/sanity/sanity';
 
 export const meta = () => {
   return [{title: 'Hydrogen | Home'}];
 };
+
+/**
+ * Sanity image builder
+ */
+const builder = imageUrlBuilder(client);
+
+function urlFor(source) {
+  return builder.image(source);
+}
 
 export async function loader({context}) {
   const {storefront} = context;
@@ -15,70 +27,56 @@ export async function loader({context}) {
 
   const homepageSanity = await context.sanity.fetch(`*[_type == "home"]`); // Sanity data from homepage
 
-  console.log(homepageSanity);
-
-  return defer({featuredCollection, recommendedProducts});
+  return defer({featuredCollection, recommendedProducts, homepageSanity});
 }
 
 export default function Homepage() {
   const data = useLoaderData();
+
   return (
     <div className="home">
-      <FeaturedCollection collection={data.featuredCollection} />
-      <RecommendedProducts products={data.recommendedProducts} />
+      <SanityHero hero={data.homepageSanity} />
     </div>
   );
 }
 
-function FeaturedCollection({collection}) {
-  if (!collection) return null;
-  const image = collection?.image;
+function SanityHero(data) {
+  const heroVideoURL = data.hero[0].hero.shopifyAsset.url;
+  const heroLogoURL = data.hero[0].hero.content[0].image.asset._ref;
+
   return (
-    <Link
-      className="featured-collection"
-      to={`/collections/${collection.handle}`}
-    >
-      {image && (
-        <div className="featured-collection-image">
-          <Image data={image} sizes="100vw" />
+    <section className="hero-section w-full relative overflow-hidden h-screen">
+      <div className="hero-content flex flex-col w-full h-full absolute top-0 right-0 bottom-0 left-0 ">
+        <div className="hero-video-container h-auto flex-shrink-1 overflow-hidden relative">
+          <div className="hero-video-wrapper h-full relative">
+            <video
+              width="100%"
+              height="100%"
+              playsInline
+              autoPlay
+              muted
+              loop
+              className="w-full h-auto object-cover"
+            >
+              <source src={heroVideoURL} type="video/mp4" />
+            </video>
+          </div>
         </div>
-      )}
-      <h1>{collection.title}</h1>
-    </Link>
-  );
-}
 
-function RecommendedProducts({products}) {
-  return (
-    <div className="recommended-products">
-      <h2>Recommended Products</h2>
-      <Suspense fallback={<div>Loading...</div>}>
-        <Await resolve={products}>
-          {({products}) => (
-            <div className="recommended-products-grid">
-              {products.nodes.map((product) => (
-                <Link
-                  key={product.id}
-                  className="recommended-product"
-                  to={`/products/${product.handle}`}
-                >
-                  <Image
-                    data={product.images.nodes[0]}
-                    aspectRatio="1/1"
-                    sizes="(min-width: 45em) 20vw, 50vw"
-                  />
-                  <h4>{product.title}</h4>
-                  <small>
-                    <Money data={product.priceRange.minVariantPrice} />
-                  </small>
-                </Link>
-              ))}
-            </div>
-          )}
-        </Await>
-      </Suspense>
-      <br />
-    </div>
+        <div className="hero-logo-container  p-5 flex-shrink-0">
+          <img
+            src={urlFor(heroLogoURL).url()}
+            alt="Test"
+            className="w-full h-auto max-w-full mx-auto"
+            style={{
+              inset: '0px',
+              objectFit: 'cover',
+              // position: 'absolute',
+            }}
+          />
+        </div>
+      </div>
+    </section>
   );
 }
 
@@ -135,3 +133,60 @@ const RECOMMENDED_PRODUCTS_QUERY = `#graphql
     }
   }
 `;
+
+{
+  /* <FeaturedCollection collection={data.featuredCollection} />
+      <RecommendedProducts products={data.recommendedProducts} /> */
+}
+
+// function FeaturedCollection({collection}) {
+//   if (!collection) return null;
+//   const image = collection?.image;
+//   return (
+//     <Link
+//       className="featured-collection"
+//       to={`/collections/${collection.handle}`}
+//     >
+//       {image && (
+//         <div className="featured-collection-image">
+//           <Image data={image} sizes="100vw" />
+//         </div>
+//       )}
+//       <h1>{collection.title}</h1>
+//     </Link>
+//   );
+// }
+
+// function RecommendedProducts({products}) {
+//   return (
+//     <div className="recommended-products">
+//       <h2>Recommended Products</h2>
+//       <Suspense fallback={<div>Loading...</div>}>
+//         <Await resolve={products}>
+//           {({products}) => (
+//             <div className="recommended-products-grid">
+//               {products.nodes.map((product) => (
+//                 <Link
+//                   key={product.id}
+//                   className="recommended-product"
+//                   to={`/products/${product.handle}`}
+//                 >
+//                   <Image
+//                     data={product.images.nodes[0]}
+//                     aspectRatio="1/1"
+//                     sizes="(min-width: 45em) 20vw, 50vw"
+//                   />
+//                   <h4>{product.title}</h4>
+//                   <small>
+//                     <Money data={product.priceRange.minVariantPrice} />
+//                   </small>
+//                 </Link>
+//               ))}
+//             </div>
+//           )}
+//         </Await>
+//       </Suspense>
+//       <br />
+//     </div>
+//   );
+// }
