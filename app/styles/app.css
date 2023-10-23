@@ -6,6 +6,7 @@
   --header-height: 64px;
   --color-dark: #000;
   --color-light: #fff;
+  --site-padding: 24px;
 }
 
 img {
@@ -179,6 +180,7 @@ aside li {
 .footer {
   background: var(--color-dark);
   margin-top: auto;
+  padding: 112px var(--site-padding) 24px;
 }
 
 .footer-menu-missing {

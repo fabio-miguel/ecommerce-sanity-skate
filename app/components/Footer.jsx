@@ -1,9 +1,11 @@
-import {useMatches, NavLink} from '@remix-run/react';
+import {useMatches, NavLink, Link} from '@remix-run/react';
 
 export function Footer({menu}) {
   return (
     <footer className="footer">
-      <FooterMenu menu={menu} />
+      {/* <FooterMenu menu={menu} /> */}
+      <FooterSiteLinks />
+      <FooterSocialLinks />
     </footer>
   );
 }
@@ -38,6 +40,68 @@ function FooterMenu({menu}) {
           </NavLink>
         );
       })}
+    </nav>
+  );
+}
+
+function FooterSiteLinks() {
+  return (
+    <nav className="pt-8 flex flex-col gap-8 items-center justify-center text-center mb-16 font-black">
+      <Link
+        to="/info/about"
+        className="uppercase text-6xl no-underline leading-7 tracking-wider text-white"
+      >
+        About
+      </Link>
+      <Link
+        to="/articles"
+        className="uppercase text-6xl no-underline leading-7 tracking-wider text-white"
+      >
+        Articles
+      </Link>
+      <Link
+        to="/info/shipping-and-delivery"
+        className="uppercase text-6xl no-underline leading-7 tracking-wider text-white"
+      >
+        Shipping & Delivery
+      </Link>
+      <Link
+        to="/info/terms-and-conditions"
+        className="uppercase text-6xl no-underline leading-7 tracking-wider text-white"
+      >
+        Terms & Conditions
+      </Link>
+      <Link
+        to="/info/privacy-policy"
+        className="uppercase text-6xl no-underline leading-7 tracking-wider text-white"
+      >
+        Privacy Policy
+      </Link>
+    </nav>
+  );
+}
+
+function FooterSocialLinks() {
+  return (
+    <nav className="pt-8 flex flex-col gap-8 items-center justify-center text-center mb-16 font-black">
+      <Link
+        to=""
+        className="uppercase text-6xl no-underline leading-7 tracking-wider text-white"
+      >
+        Instagram
+      </Link>
+      <Link
+        to=""
+        className="uppercase text-6xl no-underline leading-7 tracking-wider text-white"
+      >
+        Facebook
+      </Link>
+      <Link
+        to=""
+        className="uppercase text-6xl no-underline leading-7 tracking-wider text-white"
+      >
+        Newsletter
+      </Link>
     </nav>
   );
 }
