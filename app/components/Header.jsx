@@ -53,7 +53,7 @@ export function HeaderMenu({menu, viewport}) {
             : item.url;
         return (
           <NavLink
-            className="header-menu-item"
+            className="header-menu-item text-3xl font-black uppercase"
             end
             key={item.id}
             onClick={closeAside}
@@ -73,10 +73,13 @@ function HeaderCtas({isLoggedIn, cart}) {
   return (
     <nav className="header-ctas" role="navigation">
       <HeaderMenuMobileToggle />
-      <NavLink prefetch="intent" to="/account" style={activeLinkStyle}>
+
+      {/* <NavLink prefetch="intent" to="/account" style={activeLinkStyle}>
         {isLoggedIn ? 'Account' : 'Sign in'}
-      </NavLink>
-      <SearchToggle />
+      </NavLink>  */}
+
+      {/* <SearchToggle /> */}
+
       <CartToggle cart={cart} />
     </nav>
   );
@@ -95,7 +98,11 @@ function SearchToggle() {
 }
 
 function CartBadge({count}) {
-  return <a href="#cart-aside">Cart {count}</a>;
+  return (
+    <a href="#cart-aside" className="text-3xl font-black uppercase">
+      BAG &#40;{count}&#41;
+    </a>
+  );
 }
 
 function CartToggle({cart}) {
