@@ -1,9 +1,21 @@
 import {json} from '@shopify/remix-oxygen';
 import {useLoaderData} from '@remix-run/react';
 
+import {useLocation, useNavigation} from '@remix-run/react';
+import {client} from '~/lib/sanity/sanity';
+import imageUrlBuilder from '@sanity/image-url';
+import About from '~/custom_pages/About';
+// import Contact from '~/custom_pages/Contact';
+
 export const meta = ({data}) => {
   return [{title: `Hydrogen | ${data.page.title}`}];
 };
+
+const builder = imageUrlBuilder(client);
+
+function urlFor(source) {
+  return builder.image(source);
+}
 
 export async function loader({params, context}) {
   if (!params.handle) {
@@ -20,19 +32,41 @@ export async function loader({params, context}) {
     throw new Response('Not Found', {status: 404});
   }
 
-  return json({page});
+  const pageContentSanity = await context.sanity.fetch(`*[_type == "page"]`); // Sanity data from homepage
+
+  return json({page, pageContentSanity});
 }
 
 export default function Page() {
-  const {page} = useLoaderData();
-
+  const {page, pageContentSanity} = useLoaderData();
+  const location = useLocation();
+  const {state} = useNavigation();
+  const isAboutPage = location.pathname === '/pages/about';
+  // const isContactPage = location.pathname === '/pages/contact';
+  // console.log(pageContentSanity);
   return (
-    <div className="page">
-      <header>
-        <h1>{page.title}</h1>
-      </header>
-      <main dangerouslySetInnerHTML={{__html: page.body}} />
-    </div>
+    <>
+      {state === 'loading' ? (
+        <div></div>
+      ) : (
+        <>
+          {/* <PageHeader heading={isAboutPage ? 'About' : page.title}></PageHeader> */}
+          <div className="w-full">
+            {isAboutPage ? (
+              <About data={pageContentSanity} />
+            ) : (
+              // ) : isContactPage ? (
+              //   // <ContactForm />
+              //   <Contact data={pageContentSanity} />
+              <div
+                dangerouslySetInnerHTML={{__html: page.body}}
+                className="prose dark:prose-invert"
+              />
+            )}
+          </div>
+        </>
+      )}
+    </>
   );
 }
 
@@ -54,3 +88,18 @@ const PAGE_QUERY = `#graphql
     }
   }
 `;
+
+// DEFUALT CODE ====================================================
+// export default function Page() {
+//   const {page} = useLoaderData();
+//   console.log(page);
+
+//   return (
+//     <div className="page">
+//       <header>
+//         <h1>{page.title}</h1>
+//       </header>
+//       <main dangerouslySetInnerHTML={{__html: page.body}} />
+//     </div>
+//   );
+// }

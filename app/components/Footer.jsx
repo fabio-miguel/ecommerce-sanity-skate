@@ -6,6 +6,7 @@ export function Footer({menu}) {
       {/* <FooterMenu menu={menu} /> */}
       <FooterSiteLinks />
       <FooterSocialLinks />
+      <FooterDisclaimer />
     </footer>
   );
 }
@@ -48,32 +49,32 @@ function FooterSiteLinks() {
   return (
     <nav className="pt-8 flex flex-col gap-8 items-center justify-center text-center mb-16 font-black">
       <Link
-        to="/info/about"
-        className="uppercase text-6xl no-underline leading-7 tracking-wider text-white"
+        to="/pages/about"
+        className="uppercase xl:text-6xl no-underline leading-7 tracking-wider text-white lg:text-3xl"
       >
         About
       </Link>
       <Link
-        to="/articles"
-        className="uppercase text-6xl no-underline leading-7 tracking-wider text-white"
+        to="/pages/articles"
+        className="uppercase xl:text-6xl no-underline leading-7 tracking-wider text-white lg:text-3xl"
       >
         Articles
       </Link>
       <Link
         to="/info/shipping-and-delivery"
-        className="uppercase text-6xl no-underline leading-7 tracking-wider text-white"
+        className="uppercase xl:text-6xl no-underline leading-7 tracking-wider text-white lg:text-3xl"
       >
         Shipping & Delivery
       </Link>
       <Link
         to="/info/terms-and-conditions"
-        className="uppercase text-6xl no-underline leading-7 tracking-wider text-white"
+        className="uppercase xl:text-6xl no-underline leading-7 tracking-wider text-white lg:text-3xl"
       >
         Terms & Conditions
       </Link>
       <Link
         to="/info/privacy-policy"
-        className="uppercase text-6xl no-underline leading-7 tracking-wider text-white"
+        className="uppercase xl:text-6xl no-underline leading-7 tracking-wider text-white lg:text-3xl"
       >
         Privacy Policy
       </Link>
@@ -86,23 +87,37 @@ function FooterSocialLinks() {
     <nav className="pt-8 flex flex-col gap-8 items-center justify-center text-center mb-16 font-black">
       <Link
         to=""
-        className="uppercase text-6xl no-underline leading-7 tracking-wider text-white"
+        className="uppercase xl:text-6xl no-underline leading-7 tracking-wider text-white lg:text-3xl"
       >
         Instagram
       </Link>
       <Link
         to=""
-        className="uppercase text-6xl no-underline leading-7 tracking-wider text-white"
+        className="uppercase xl:text-6xl no-underline leading-7 tracking-wider text-white lg:text-3xl"
       >
         Facebook
       </Link>
       <Link
         to=""
-        className="uppercase text-6xl no-underline leading-7 tracking-wider text-white"
+        className="uppercase xl:text-6xl no-underline leading-7 tracking-wider text-white lg:text-3xl"
       >
         Newsletter
       </Link>
     </nav>
+  );
+}
+
+function FooterDisclaimer() {
+  return (
+    <div className="pt-4 flex flex-col gap-8 items-center justify-center text-center mb-16 font-bold">
+      <h2 className="uppercase text-l font-normal no-underline leading-7 tracking-wider text-white">
+        DISCLAIMER
+      </h2>
+      <h4 className="uppercase text-sm font-light no-underline leading-7 tracking-wider text-white">
+        This is a concept website. Products on this website are not for sale.
+        This website was created for creative purposes only.
+      </h4>
+    </div>
   );
 }
 

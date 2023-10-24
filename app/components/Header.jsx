@@ -6,7 +6,7 @@ export function Header({header, isLoggedIn, cart}) {
   return (
     <header className="header">
       <NavLink prefetch="intent" to="/" style={activeLinkStyle} end>
-        <strong className="font-extrabold">
+        <strong className="text-xl font-black uppercase tracking-tighter">
           {/* {shop.name} */}
           CONCEPT
         </strong>
