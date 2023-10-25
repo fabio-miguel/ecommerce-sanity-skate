@@ -4,12 +4,15 @@ import {Await, Link, useLoaderData} from '@remix-run/react';
 
 import {
   Image,
+  Video,
   Money,
   VariantSelector,
   getSelectedProductOptions,
   CartForm,
 } from '@shopify/hydrogen';
 import {getVariantUrl} from '~/utils';
+
+import {MEDIA_FRAGMENT, PRODUCT_CARD_FRAGMENT} from '~/data/fragments';
 
 export const meta = ({data}) => {
   return [{title: `Hydrogen | ${data.product.title}`}];
@@ -93,14 +96,86 @@ function redirectToFirstVariant({product, request}) {
 export default function Product() {
   const {product, variants} = useLoaderData();
   const {selectedVariant} = product;
+
+  // console.log(product);
+
   return (
     <div className="product">
-      <ProductImage image={selectedVariant?.image} />
+      {/* <ProductImage image={selectedVariant?.image} /> */}
+      <ProductGallery media={product.media.nodes} />
       <ProductMain
         selectedVariant={selectedVariant}
         product={product}
         variants={variants}
       />
+    </div>
+  );
+}
+
+function ProductGallery({media}) {
+  // console.log(media);
+  if (!media.length) {
+    return null;
+  }
+  return (
+    <div>
+      {media.map((med, i) => {
+        const isFirst = i === 0;
+        const isFourth = i === 3;
+        const isFullWidth = i % 3 === 0;
+
+        const image =
+          med.__typename === 'MediaImage'
+            ? {...med.image, altText: med.alt || 'Product image'}
+            : null;
+
+        const video =
+          med.__typename === 'Video'
+            ? {
+                sources: med.sources,
+                altText: med.alt || 'Product video',
+                previewImage: med.previewImage,
+              }
+            : null;
+
+        const style = [
+          isFullWidth ? 'md:col-span-2' : 'md:col-span-1',
+          isFirst || isFourth ? '' : 'md:aspect-[4/5]',
+          'aspect-square snap-center card-image bg-transparent dark:bg-contrast/10 w-mobileGallery md:w-full',
+        ].join(' ');
+
+        return (
+          <div className={`${style} border-none`} key={med.id || image?.id}>
+            {image && (
+              <Image
+                loading={i === 0 ? 'eager' : 'lazy'}
+                data={image}
+                aspectRatio={!isFirst && !isFourth ? '4/5' : undefined}
+                sizes={
+                  isFirst || isFourth
+                    ? '(min-width: 48em) 60vw, 90vw'
+                    : '(min-width: 48em) 30vw, 90vw'
+                }
+                className="object-cover w-full h-full aspect-square fadeIn"
+              />
+            )}
+
+            {video && (
+              <div className="aspect-square">
+                <Video
+                  data={video}
+                  className="object-cover w-full h-full"
+                  // Adjust other video props as needed
+                  autoPlay
+                  loop
+                  muted
+                  controls={false}
+                />
+              </div>
+            )}
+          </div>
+        );
+      })}
     </div>
   );
 }
@@ -321,6 +396,13 @@ const PRODUCT_FRAGMENT = `#graphql
     selectedVariant: variantBySelectedOptions(selectedOptions: $selectedOptions) {
       ...ProductVariant
     }
+    
+    media(first: 7) {
+        nodes {
+          ...Media
+        }
+      }
+
     variants(first: 1) {
       nodes {
         ...ProductVariant
@@ -332,6 +414,7 @@ const PRODUCT_FRAGMENT = `#graphql
     }
   }
   ${PRODUCT_VARIANT_FRAGMENT}
+  ${MEDIA_FRAGMENT}
 `;
 
 const PRODUCT_QUERY = `#graphql
