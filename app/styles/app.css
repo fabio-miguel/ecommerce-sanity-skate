@@ -130,7 +130,7 @@ aside li {
 */
 .header {
   align-items: center;
-  background: #fff;
+  background: #f9f7f6;
   display: flex;
   height: var(--header-height);
   padding: 0 1rem;
@@ -392,6 +392,7 @@ aside li {
 
 .product h1 {
   margin-top: 0;
+  font-size: 1rem;
 }
 
 .product-images {

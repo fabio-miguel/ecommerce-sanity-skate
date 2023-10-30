@@ -16,7 +16,7 @@ export async function loader({request, params, context}) {
   const {handle} = params;
   const {storefront} = context;
   const paginationVariables = getPaginationVariables(request, {
-    pageBy: 8,
+    pageBy: 12,
   });
 
   if (!handle) {
@@ -50,8 +50,12 @@ export default function Collection() {
             </PreviousLink>
             <ProductsGrid products={nodes} />
             <br />
-            <NextLink>
-              {isLoading ? 'Loading...' : <span>Load more ↓</span>}
+            <NextLink className="hover:no-underline">
+              {isLoading ? (
+                'Loading...'
+              ) : (
+                <span className="uppercase font-extrabold">Load more ↓</span>
+              )}
             </NextLink>
           </>
         )}
@@ -81,7 +85,7 @@ function ProductItem({product, loading}) {
   const variantUrl = useVariantUrl(product.handle, variant.selectedOptions);
   return (
     <Link
-      className="product-item"
+      className="product-item hover:no-underline hover:italic"
       key={product.id}
       prefetch="intent"
       to={variantUrl}
@@ -95,10 +99,14 @@ function ProductItem({product, loading}) {
           sizes="(min-width: 45em) 400px, 100vw"
         />
       )}
-      <h4>{product.title}</h4>
-      <small>
-        <Money data={product.priceRange.minVariantPrice} />
-      </small>
+      <h4 className="uppercase font-extrabold text-center text-lg ">
+        {product.title}
+      </h4>
+
+      <Money
+        className="uppercase font-extrabold text-center text-lg"
+        data={product.priceRange.minVariantPrice}
+      />
     </Link>
   );
 }

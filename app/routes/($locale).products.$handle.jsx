@@ -1,4 +1,4 @@
-import {Suspense} from 'react';
+import {Suspense, useState} from 'react';
 import {defer, redirect} from '@shopify/remix-oxygen';
 import {Await, Link, useLoaderData} from '@remix-run/react';
 
@@ -21,6 +21,7 @@ export const meta = ({data}) => {
 export async function loader({params, request, context}) {
   const {handle} = params;
   const {storefront} = context;
+  const productsSanity = await context.sanity.fetch(`*[_type == "product"]`); // Sanity product data for product page
 
   const selectedOptions = getSelectedProductOptions(request).filter(
     (option) =>
@@ -73,7 +74,7 @@ export async function loader({params, request, context}) {
     variables: {handle},
   });
 
-  return defer({product, variants});
+  return defer({product, variants, productsSanity});
 }
 
 function redirectToFirstVariant({product, request}) {
@@ -94,10 +95,9 @@ function redirectToFirstVariant({product, request}) {
 }
 
 export default function Product() {
-  const {product, variants} = useLoaderData();
+  const {product, variants, productsSanity} = useLoaderData();
   const {selectedVariant} = product;
-
-  // console.log(product);
+  console.log(productsSanity);
 
   return (
     <div className="product">
@@ -107,6 +107,7 @@ export default function Product() {
         selectedVariant={selectedVariant}
         product={product}
         variants={variants}
+        productDesc={productsSanity}
       />
     </div>
   );
@@ -197,12 +198,20 @@ function ProductImage({image}) {
   );
 }
 
-function ProductMain({selectedVariant, product, variants}) {
+function ProductMain({selectedVariant, product, variants}, productsSanity) {
   const {title, descriptionHtml} = product;
+
+  console.log(descriptionHtml);
+  const [isDescriptionVisible, setDescriptionVisible] = useState(false);
+
+  const toggleDescription = () => {
+    setDescriptionVisible(!isDescriptionVisible);
+  };
+
   return (
-    <div className="product-main">
-      <h1>{title}</h1>
-      <ProductPrice selectedVariant={selectedVariant} />
+    <div className="product-main mt-4">
+      <h1 className="uppercase font-extrabold">{title}</h1>
+      <ProductPrice className="font-lg" selectedVariant={selectedVariant} />
       <br />
       <Suspense
         fallback={
@@ -228,19 +237,28 @@ function ProductMain({selectedVariant, product, variants}) {
       </Suspense>
       <br />
       <br />
-      <p>
-        <strong>Description</strong>
-      </p>
-      <br />
-      <div dangerouslySetInnerHTML={{__html: descriptionHtml}} />
-      <br />
+      <div className="flex-col w-2/5 accordion border-t border-gray-300 border-b">
+        <button
+          className="flex w-2/5 justify-between py-4 cursor-pointer"
+          onClick={toggleDescription}
+        >
+          <strong className="text-left">Description</strong>
+        </button>
+        {isDescriptionVisible && (
+          <>
+            <br />
+            <div dangerouslySetInnerHTML={{__html: descriptionHtml}} />
+            <br />
+          </>
+        )}
+      </div>
     </div>
   );
 }
 
 function ProductPrice({selectedVariant}) {
   return (
-    <div className="product-price">
+    <div className="product-price text-lg">
       {selectedVariant?.compareAtPrice ? (
         <>
           <p>Sale</p>
@@ -335,6 +353,7 @@ function AddToCartButton({analytics, children, disabled, lines, onClick}) {
             type="submit"
             onClick={onClick}
             disabled={disabled ?? fetcher.state !== 'idle'}
+            className="border-4 border-black p-4 uppercase font-bold"
           >
             {children}
           </button>

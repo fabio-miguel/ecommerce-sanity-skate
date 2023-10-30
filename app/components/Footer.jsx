@@ -117,6 +117,14 @@ function FooterDisclaimer() {
         This is a concept website. Products on this website are not for sale.
         This website was created for creative purposes only.
       </h4>
+      <p className="text-xs font-light no-underline leading-7 tracking-wider text-white">
+        Created by Fabio Miguel - Web Developer
+      </p>
+      <a href="https://fabiomiguel.com/." target="_blank" rel="noreferrer">
+        <p className="text-xs font-light no-underline leading-7 tracking-wider text-green-500">
+          fabiomiguel.com
+        </p>
+      </a>
     </div>
   );
 }
