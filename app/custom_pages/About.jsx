@@ -1,6 +1,7 @@
 import {client} from '~/lib/sanity/sanity';
 import imageUrlBuilder from '@sanity/image-url';
 import {Image} from '@shopify/hydrogen';
+import {Link} from '@remix-run/react';
 // import {Image} from '@shopify/hydrogen';
 
 const builder = imageUrlBuilder(client);
@@ -67,6 +68,13 @@ const About = (pageContentSanity) => {
                 </h2>
                 <div className="portable-text">
                   <p>{pageContentSanity.data[0].body[0].children[0].text}</p>
+                </div>
+                <div>
+                  <Link to="/pages/sanity-studio-about-page">
+                    <button className="bg-black text-white p-4">
+                      View How Content is Managed on This Page
+                    </button>
+                  </Link>
                 </div>
               </div>
             </div>

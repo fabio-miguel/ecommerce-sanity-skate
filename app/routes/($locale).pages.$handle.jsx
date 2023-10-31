@@ -6,6 +6,7 @@ import {client} from '~/lib/sanity/sanity';
 import imageUrlBuilder from '@sanity/image-url';
 import About from '~/custom_pages/About';
 import Help from '~/custom_pages/Help';
+import SanityAbout from '~/custom_pages/SanityAbout';
 // import Contact from '~/custom_pages/Contact';
 
 export const meta = ({data}) => {
@@ -44,6 +45,9 @@ export default function Page() {
   const {state} = useNavigation();
   const isAboutPage = location.pathname === '/pages/about';
   const isHelpPage = location.pathname === '/pages/help';
+  const isSanityAboutpPage =
+    location.pathname === '/pages/sanity-studio-about-page';
+
   // const isContactPage = location.pathname === '/pages/contact';
   // console.log(pageContentSanity);
   return (
@@ -64,6 +68,14 @@ export default function Page() {
             )}
             {isHelpPage ? (
               <Help data={pageContentSanity} />
+            ) : (
+              <div
+                dangerouslySetInnerHTML={{__html: page.body}}
+                className="prose dark:prose-invert"
+              />
+            )}
+            {isSanityAboutpPage ? (
+              <SanityAbout />
             ) : (
               <div
                 dangerouslySetInnerHTML={{__html: page.body}}
