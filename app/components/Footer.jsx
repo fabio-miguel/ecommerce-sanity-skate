@@ -55,25 +55,25 @@ function FooterSiteLinks() {
         About
       </Link>
       <Link
-        to="/pages/articles"
+        to=""
         className="uppercase xl:text-6xl no-underline leading-7 tracking-wider text-white lg:text-3xl"
       >
         Articles
       </Link>
       <Link
-        to="/info/shipping-and-delivery"
+        to=""
         className="uppercase xl:text-6xl no-underline leading-7 tracking-wider text-white lg:text-3xl"
       >
         Shipping & Delivery
       </Link>
       <Link
-        to="/info/terms-and-conditions"
+        to=""
         className="uppercase xl:text-6xl no-underline leading-7 tracking-wider text-white lg:text-3xl"
       >
         Terms & Conditions
       </Link>
       <Link
-        to="/info/privacy-policy"
+        to=""
         className="uppercase xl:text-6xl no-underline leading-7 tracking-wider text-white lg:text-3xl"
       >
         Privacy Policy
@@ -115,7 +115,11 @@ function FooterDisclaimer() {
       </h2>
       <h4 className="uppercase text-sm font-light no-underline leading-7 tracking-wider text-white">
         This is a concept website. Products on this website are not for sale.
-        This website was created for creative purposes only.
+        This website was created for creative purposes only. Some links have
+        been incorporated for stylistic and reference purposes only and are
+        therefore "dummy links." Some styles have been minimised for the
+        purposes of greater interpretation. All styles are adaptable and
+        additional styles possible.
       </h4>
       <p className="text-xs font-light no-underline leading-7 tracking-wider text-white">
         Created by Fabio Miguel - Web Developer

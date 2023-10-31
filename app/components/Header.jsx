@@ -22,6 +22,8 @@ export function HeaderMenu({menu, viewport}) {
   const publicStoreDomain = root?.data?.publicStoreDomain;
   const className = `header-menu-${viewport}`;
 
+  // console.log(menu)
+
   function closeAside(event) {
     if (viewport === 'mobile') {
       event.preventDefault();

@@ -5,6 +5,7 @@ import {useLocation, useNavigation} from '@remix-run/react';
 import {client} from '~/lib/sanity/sanity';
 import imageUrlBuilder from '@sanity/image-url';
 import About from '~/custom_pages/About';
+import Help from '~/custom_pages/Help';
 // import Contact from '~/custom_pages/Contact';
 
 export const meta = ({data}) => {
@@ -42,6 +43,7 @@ export default function Page() {
   const location = useLocation();
   const {state} = useNavigation();
   const isAboutPage = location.pathname === '/pages/about';
+  const isHelpPage = location.pathname === '/pages/help';
   // const isContactPage = location.pathname === '/pages/contact';
   // console.log(pageContentSanity);
   return (
@@ -55,9 +57,14 @@ export default function Page() {
             {isAboutPage ? (
               <About data={pageContentSanity} />
             ) : (
-              // ) : isContactPage ? (
-              //   // <ContactForm />
-              //   <Contact data={pageContentSanity} />
+              <div
+                dangerouslySetInnerHTML={{__html: page.body}}
+                className="prose dark:prose-invert"
+              />
+            )}
+            {isHelpPage ? (
+              <Help data={pageContentSanity} />
+            ) : (
               <div
                 dangerouslySetInnerHTML={{__html: page.body}}
                 className="prose dark:prose-invert"

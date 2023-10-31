@@ -21,7 +21,6 @@ export const meta = ({data}) => {
 export async function loader({params, request, context}) {
   const {handle} = params;
   const {storefront} = context;
-  const productsSanity = await context.sanity.fetch(`*[_type == "product"]`); // Sanity product data for product page
 
   const selectedOptions = getSelectedProductOptions(request).filter(
     (option) =>
@@ -74,7 +73,7 @@ export async function loader({params, request, context}) {
     variables: {handle},
   });
 
-  return defer({product, variants, productsSanity});
+  return defer({product, variants});
 }
 
 function redirectToFirstVariant({product, request}) {
@@ -95,25 +94,26 @@ function redirectToFirstVariant({product, request}) {
 }
 
 export default function Product() {
-  const {product, variants, productsSanity} = useLoaderData();
+  const {product, variants} = useLoaderData();
   const {selectedVariant} = product;
-  console.log(productsSanity);
 
   return (
     <div className="product">
       {/* <ProductImage image={selectedVariant?.image} /> */}
-      <ProductGallery media={product.media.nodes} />
+      <ProductGallery
+        media={product.media.nodes}
+        selectedVariant={selectedVariant}
+      />
       <ProductMain
         selectedVariant={selectedVariant}
         product={product}
         variants={variants}
-        productDesc={productsSanity}
       />
     </div>
   );
 }
 
-function ProductGallery({media}) {
+function ProductGallery({media, selectedVariant}) {
   // console.log(media);
   if (!media.length) {
     return null;
@@ -198,10 +198,10 @@ function ProductImage({image}) {
   );
 }
 
-function ProductMain({selectedVariant, product, variants}, productsSanity) {
+function ProductMain({selectedVariant, product, variants}) {
   const {title, descriptionHtml} = product;
 
-  console.log(descriptionHtml);
+  // console.log(descriptionHtml);
   const [isDescriptionVisible, setDescriptionVisible] = useState(false);
 
   const toggleDescription = () => {
@@ -278,6 +278,7 @@ function ProductPrice({selectedVariant}) {
 }
 
 function ProductForm({product, selectedVariant, variants}) {
+  // console.log(selectedVariant);
   return (
     <div className="product-form">
       <VariantSelector
@@ -313,7 +314,7 @@ function ProductForm({product, selectedVariant, variants}) {
 function ProductOptions({option}) {
   return (
     <div className="product-options" key={option.name}>
-      <h5>{option.name}</h5>
+      <h5 className="text-lg">{option.name}:</h5>
       <div className="product-options-grid">
         {option.values.map(({value, isAvailable, isActive, to}) => {
           return (
