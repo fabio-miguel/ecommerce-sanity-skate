@@ -1,21 +1,6 @@
-# Hydrogen template: Skeleton
+# E-commerce Sakte Concept Store
 
-Hydrogen is Shopify’s stack for headless commerce. Hydrogen is designed to dovetail with [Remix](https://remix.run/), Shopify’s full stack web framework. This template contains a **minimal setup** of components, queries and tooling to get started with Hydrogen.
-
-[Check out Hydrogen docs](https://shopify.dev/custom-storefronts/hydrogen)
-[Get familiar with Remix](https://remix.run/docs/en/v1)
-
-## What's included
-
-- Remix
-- Hydrogen
-- Oxygen
-- Shopify CLI
-- ESLint
-- Prettier
-- GraphQL generator
-- TypeScript and JavaScript flavors
-- Minimal setup of components and routes
+Built a dynamic e-commerce skate store using Remix.js and Sanity.io. Implemented a comprehensive setup of components and routes to deliver a user-friendly shopping experience. Leveraged GraphQL for streamlined data management and Tailwind CSS via PostCSS for a modern, responsive design. The solution enabled efficient content management and provided a robust, scalable front-end architecture.
 
 ## Getting started
 
