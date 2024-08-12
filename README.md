@@ -4,15 +4,10 @@ Built a dynamic e-commerce skate store using Remix.js and Sanity.io. Implemented
 
 [ecommerce-skate-link](https://fullstack-pack-core-sktbs.vercel.app/)
 
-## Getting started
+## Preview
 
-**Requirements:**
+![](https://github.com/fabio-miguel/ecommerce-skate-reel.gif)
 
-- Node.js version 16.14.0 or higher
-
-```bash
-npm create @shopify/hydrogen@latest
-```
 
 ## Building for production
 
@@ -25,4 +20,4 @@ npm run build
 ```bash
 npm run dev
 ```
-# fullstack-pack-core-SKTBS
+
