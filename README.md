@@ -6,7 +6,7 @@ Built a dynamic e-commerce skate store using Remix.js and Sanity.io. Implemented
 
 ## Preview
 
-![](https://github.com/fabio-miguel/ecommerce-sanity-skate/ecommerce-skate-reel.gif)
+![Skate Store Demo](https://github.com/fabio-miguel/ecommerce-sanity-skate/raw/main/public/ecommerce-skate-reel)
 
 
 ## Building for production
